@@ -1,0 +1,112 @@
+{% extends "dashboard_header.html" %}
+{% load static %}
+{% block title %}
+    LinkedIn | Profile
+{% endblock %}
+
+{% block head_includes %}
+    <link rel="stylesheet" href="{% static "assets/css/profilepage.css" %}" />
+{% endblock %}
+
+{% block middle %}
+   <div class="wrapper">
+        <div class="main-profile-view-container">
+            <div class="simple-container">
+                <div class="main-profile-photo">
+                    <img src="/media/{{ user_profile.profile_pic }}" />
+                </div>
+                <div class="right-part">
+                    <div class="main-user-information">
+                        <h2>{{ user_profile.get_full_name }}</h2>
+                        <p>{% for e in user_profile.student_set.all %}Student at {{ e.School_University }},{% endfor %}</p>
+                        <p>{% for e in user_profile.employed_set.all %}works as {{ e.Job_title }} at {{ e.Company }},{% endfor %}</p>
+                        <p>{% for e in user_profile.jobseeker_set.all %}worked at {{ e.MostRecentCompany }},{% endfor %}</p>
+                        <p><b>{{ user.country }}</b></p>
+                            {% if user.id != user_profile.id %}
+                                {% if user_profile in connected_users %}
+                                    <div>
+                                        <a class="primary-blue-button" href="/compose_message/">send message</a>
+                                    </div>
+                                {% elif user_profile in invited_users %}
+                                    <div>
+                                        <p><b>Request Pending</b></p>
+                                    </div>
+                                {% else %}
+                                    <div>
+                                        <a class="primary-blue-button" href="/connection/{{ user_profile.id }}">Add Connection</a>
+                                    </div>
+                                {% endif %}
+                            {% endif %}
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            {% if user.id == user_profile.id %}
+                <div id="user-connections" class="simple-container">
+                    <div  class="simple-header-box">
+                        <h3>Connections</h3>
+                    </div>
+                    <div class="header-right-part">
+                        <b>( {{ connected_users|length }} )</b>
+                    </div>
+                    <div style="clear: both;" ></div>
+                    {% for connection in connected_users %}
+                        <div class="connection-container">
+                            <div class="conection-profile-photo">
+                                <img src="/media/{{ connection.profile_pic }}" />
+                            </div>
+                            <div class="connection-information">
+                                <a href="/user/{{ connection.id }}"><h4>{{ connection.get_full_name }}</h4></a>
+                                    {% if connection.user_type == "Student" %}
+                                        <p>Studies at <b>{% for e in connection.student_set.all %}{{ e.School_University }},{% endfor %}</b></p>
+                                    {% elif connection.user_type == "Employed" %}
+                                        <p>works as {% for e in connection.employed_set.all %}<b>{{ e.Job_title }}</b> at {{ e.Company }},{% endfor %}</p>
+                                    {% elif connection.user_type == "Job Seeker" %}
+                                        <p>worked at <b>{% for e in connection.jobseeker_set.all %}{{ e.MostRecentCompany }},{% endfor %}</b></p>
+                                    {% endif %}
+                                    <p class="country">{{ connection.country }}</p>
+                                    <p class="country">{{ connection.email }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="simple-container">
+                    <div  class="simple-header-box">
+                        <h3>Shared Connections</h3>
+                    </div>
+                    <div class="header-right-part">
+
+                    </div>
+                    <div style="clear: both;" ></div>
+
+                    {% for connection in connected_users %}
+                        {% if connection in user_profile_connected %}
+                        <div class="connection-container">
+                            <div class="conection-profile-photo">
+                                <img src="/media/{{ connection.profile_pic }}" />
+                            </div>
+                            <div class="connection-information">
+                                <a href="/user/{{ connection.id }}"><h4>{{ connection.get_full_name }}</h4></a>
+                                    {% if connection.user_type == "Student" %}
+                                        <p>Studies at <b>{% for e in connection.student_set.all %}{{ e.School_University }},{% endfor %}</b></p>
+                                    {% elif connection.user_type == "Employed" %}
+                                        <p>works as {% for e in connection.employed_set.all %}<b>{{ e.Job_title }}</b> at {{ e.Company }},{% endfor %}</p>
+                                    {% elif connection.user_type == "Job Seeker" %}
+                                        <p>worked at <b>{% for e in connection.jobseeker_set.all %}{{ e.MostRecentCompany }},{% endfor %}</b></p>
+                                    {% endif %}
+                                    <p class="country">{{ connection.country }}</p>
+                                    <p class="country">{{ connection.email }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        <div class="right-navigation">
+
+        </div>
+        <div style="clear: both;"></div>
+   </div>
+{% endblock %}

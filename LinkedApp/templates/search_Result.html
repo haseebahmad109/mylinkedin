@@ -1,0 +1,124 @@
+{% extends "dashboard_header.html" %}
+{% load static %}
+
+{% block head_includes %}
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/search_result.css" %}" />
+{% endblock %}
+
+{% block title %}
+    LinkedIn | Search
+{% endblock %}
+
+{% block middle %}
+    <div class="wrapper">
+        <div class="container-box">
+            <div class="left-part">
+                <div class="search-mod">
+                    <h4>SEARCH</h4>
+                </div>
+                <div class="bottom-border">
+                    <a id="toshakenchange" class="advanced" >Advanced</a>
+                    <span id="spantochange" class="icon-right-arrow"></span>
+                </div>
+                <div class="bottom-border">
+                    <div class="advanced-form">
+                        <form id="advance-search" method="post">
+                            {% csrf_token %}
+                            <label>keyword</label>
+                            <span class="error">{{ form.keyword.errors }}</span>
+                             {{ form.keyword }}
+                            <label>First Name</label>
+                            <span class="error">{{ form.first_name.errors }}</span>
+                            {{ form.first_name }}
+                            <label>Last Name</label>
+                            <span class="error">{{ form.last_name.errors }}</span>
+                            {{ form.last_name }}
+                            <label>Title</label>
+                            <span class="error">{{ form.title.errors }}</span>
+                            {{ form.title }}
+                            <label>Company</label>
+                            <span class="error">{{ form.company.errors }}</span>
+                            {{ form.company }}
+                            <label>School</label>
+                            <span class="error">{{ form.school.errors }}</span>
+                            {{ form.school }}
+                            <label>Country</label>
+                            <span class="error">{{ form.country.errors }}</span>
+                            {{ form.country }}
+                            <br><br>
+                            <input class="primary-blue-button" id="buttonformajax" type="button" value="Search">
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="right-part">
+                <div class="bottom-border" >
+                    <span class="no-of-result"><b>{{ results|length }}</b> results</span>
+                </div>
+                <div class="search-result">
+                    <div>
+                        {% for entity in results %}
+                            <div class="one-entity bottom-border">
+                                <div class="pic-box">
+                                    <img src="/media/{{ entity.profile_pic }}">
+                                </div>
+                                <div class="middle-part" >
+                                    <a href="/user/{{ entity.id }}"><h2>{{  entity.first_name}} {{ entity.last_name }} {% if entity.id == user.id %}<span class="gray-text">( you )</span>{% endif %}</h2></a>
+                                    {% if entity.user_type == "Student" %}
+                                        <p>Studies at <b>{% for e in entity.student_set.all %}{{ e.School_University }},{% endfor %}</b></p>
+                                    {% elif entity.user_type == "Employed" %}
+                                        <p>works as <b>{% for e in entity.employed_set.all %}{{ e.Job_title  }}</b> at <b>{{ e.Company }},{% endfor %}</b></p>
+                                    {% elif entity.user_type == "Job Seeker" %}
+                                        <p>worked at <b>{% for e in entity.jobseeker_set.all %}{{ e.MostRecentCompany }},{% endfor %}</b></p>
+                                    {% endif %}
+                                    <p class="country">{{ entity.country }}</p>
+                                    <p class="country">{{ entity.email }}</p>
+                                </div>
+                                {% if entity.id != user.id %}
+                                    {% if entity in connected_users %}
+                                        <div class="primary-blue-button right-side connect-buuton">
+                                            <a href="/compose_message/">Send Message</a>
+                                        </div>
+                                    {% elif entity in invited_users %}
+                                        <div class="right-side">
+                                            <p style="margin-top: 30px;" class="gray-text"><b>Request Pending</b></p>
+                                        </div>
+                                    {% else %}
+                                        <div class="primary-blue-button right-side connect-buuton">
+                                            <a href="/connection/{{ entity.id }}">connect</a>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+    </div>
+{% endblock %}
+
+<div style="margin-top: 50px;"></div>
+
+
+
+{% block script_include %}
+    <script type="text/javascript" src="{% static "assets/javascript/jquery-ui-1.10.3.custom.min.js" %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("a.advanced").click(function(){
+                if ($("a.advanced").length != 0){
+                    $(".advanced-form").effect("shake" , {times:3}, 600)
+                    return false;
+                }
+                return true;
+            });
+            if ( (decodeURIComponent((new RegExp('[?|&]' + 'search_query' + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null ) == null){
+                $(".advanced-form").effect("shake" , {times:4}, 700);
+            }
+
+        });
+    </script>
+{% endblock %}

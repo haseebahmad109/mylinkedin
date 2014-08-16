@@ -1,0 +1,57 @@
+{% extends "dashboard_header.html" %}
+{% load static %}
+
+{% block title %}
+    invitation to {{ receiver.first_name }}
+{% endblock %}
+
+{% block head_includes %}
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/connection_invitation.css" %}" />
+{% endblock %}
+
+{% block middle %}
+    <div  >
+        <div class="wrapper">
+            <div class="main-invitation-block">
+                <h2>Invite <b>{{ receiver.first_name }}</b> to connect on LinkedIN</h2>
+                <form method="post" action="/send-invite/">{% csrf_token %}
+                    <div class="invitation-block-top">
+                        <div class="invitation-block-body">
+                            <p><b>How do you know {{ receiver.first_name }} ?</b></p>
+                                <div class="form-part">
+                                    <input id="colleague" type="radio" value="colleague" name="relation" />
+                                    <label for="colleague">Colleague</label><br>
+                                    <input id="classmate" type="radio" value="classmate" name="relation" />
+                                    <label for="classmate">Classmate</label><br>
+                                    <input id="b_partner" type="radio" value="business partner" name="relation" />
+                                    <label for="b_partner">We’ve done business together</label><br>
+                                    <input id="friend" type="radio" value="friend" name="relation" />
+                                    <label for="friend">Friend</label><br>
+                                    <input id="other" type="radio" value="other" checked="checked" name="relation" />
+                                    <label for="other" >Other</label><br>
+                                    <input id="don't know" type="radio" value="don't know" name="relation" />
+                                    <label for="don't know">I don’t know {{ receiver.first_name }}</label>
+                                </div>
+                                <div class="form-part-bottom">
+                                        <p><b>Include a personal note:</b> <span class="gray-text">(optional)</span></p>
+                                        <textarea name="note" cols="35" rows="5">I'd like to add you to my professional network on LinkedIN
+
+    - {{ user.first_name }} {{ user.last_name }}</textarea>
+                                </div>
+
+                        </div>
+                    </div>
+                    <div class="invitation-block-bottom">
+                        <input type="hidden" name="receiver" value="{{ con }}" />
+                    </div>
+                    <center>
+                        <input class="primary-blue-button" value="send Invitation" type="submit" />
+                        or <a href="/logged-in-view/" >cancel</a>
+                    </center>
+
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

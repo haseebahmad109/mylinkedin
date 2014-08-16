@@ -1,0 +1,139 @@
+{% extends "dashboard_header.html" %}
+
+{% load static %}
+
+{% block title %}
+    {{ user.first_name }} {{ user.last_name }}
+{% endblock %}
+
+{% block head_includes %}
+    <style>
+     .endless_more{
+         margin-left:44%;
+     }
+    .endless_container{
+        padding-top: 10px;
+        padding-bottom: 10px;
+        background:none repeat scroll 0 0 #EFEFEF;
+    }
+    </style>
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/logggedinpage.css" %}" />
+{% endblock %}
+
+{% block middle %}
+    <div class="wrapper">
+        <div class="main-profile-view-container">
+            <div class="simple-container">
+                <div class="status-box">
+                    <div class="profile-pic-container">
+                        <img src="/media/{{ user.profile_pic }}" />
+                    </div>
+                    <div id="status_post" class="status-container">
+                        <div class="status-text-box">
+                            <div class="attach icon-attachment">
+                                <form enctype="multipart/form-data" id="att_form" method="post" action="/post-attachment/" target="uploadPic" >
+                                    {% csrf_token %}<input name="pic" id="attachment" type="file" />
+                                </form>
+                                <iframe class="hide" id="uploadPic" name="uploadPic" width="0" height="0" ></iframe>
+                            </div>
+                            <textarea id="main_status" name="main_status" placeholder="share an update ..." ></textarea>
+                        </div>
+                        <div class="close hide attachments-or-links att_form_data">
+                            <div class="images-part">
+                                <img src="" />
+                            </div>
+                            <div class="content-part">
+                                <textarea id="ti" class="simple-small-heading"  name="heading" ></textarea>
+                                <textarea id="para" class="simple-text" name="plain-text"></textarea>
+                            </div>
+                            <input id="image-attached" name="image-attached" value="false" type="hidden" />
+                            <input id="link-attached" name="link-attached" value="false" type="hidden" />
+                            <div class="closeBox icon-cross"></div>
+                            <div style="clear: both;"></div>
+                        </div>
+                        <div class="public-connection-dropdown">
+                            share with : <b><span class="share-with">public</span></b> <span class="icon-arrows float-right"></span><span style="clear: both;"></span>
+                        </div>
+                        <div class="to-open-on-click">
+                            <span class="public option"><span id="public-selected" class="icon-small-tick" ></span>public</span>
+                            <span class="connections option"><span id="connection-selected" class="icon-small-tick"></span>connections</span>
+                            <input id="status-type" name="status-type" type="hidden" value="public" />
+                        </div>
+                        <div class="status-submit">
+                            <input id="status_submit" name="status" class="primary-blue-button" type="submit" value="share" />
+                            <div style="clear: both"></div>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+            </div>
+            <div id="allStatus" class="simple-container">
+                {% include "loggedinajax.html" %}
+                {% block js %}
+                    {{ block.super }}
+                    <script src="{% static "assets/javascript/jquery.js" %}"></script>
+                    <script src="{% static "assets/javascript/endless-pagination.js" %}"></script>
+                    <script>$.endlessPaginate({paginateOnScroll:true ,
+                                                paginateOnScrollMargin:20});</script>
+                {% endblock %}
+                <div style="clear: both"></div>
+            </div>
+        </div>
+        <div class="right-navigation">
+            {% if may_know|length != 0 %}
+            <div id="may-know-users" class="comment-box">
+                <h4 class=" bottom-border comment-box bold-blue-text">people you may know</h4>
+                {% for u in may_know  %}
+                    {% if u != user and u not in connected_users and u not in invited_users %}
+                    <div class="single-user bottom-border comment-box">
+                        <a href="/user/{{ u.id }}" class="no-decoration gray-text"><p >{{ u.get_full_name }}</p></a>
+                        <div class="profile-pic-container" style="float: left;">
+                            <img src="/media/{{ u.profile_pic }}" />
+                        </div>
+                        <div class=" comment-box" style="float: left;">
+                            <a href="/connection/{{ u.id }}" style="font-size: 12px;" >connect</a>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+    <br><br>
+{% endblock %}
+
+
+{% block script_include %}
+    <script src="{% static "assets/javascript/jquery.autosize.min.js" %}"></script>
+    <script type="text/javascript">
+        window.preserveHtml = ""
+        $('.message').delay(5000).fadeOut("slow");
+        $('.status-container textarea').autosize();
+        $('#attachment').change(function(){
+            $('.att_form_data').show();
+            var parentData = $('.att_form_data').html();
+            window.preserveHtml = $('.att_form_data').html();
+            $('.att_form_data').html('<center><img src="/static/assets/images/anim_loading_16x16.gif" /></center>');
+            $('form#att_form').submit();
+            $('#uploadPic').load(function(){
+                if ($('#uploadPic').contents().find("p").html() == "null"){
+                   $('.att_form_data').html('<p>cannot be uploaded</p>');
+                }
+                else{
+                    $('.att_form_data').html(parentData);
+                    $('#image-attached').val("true");
+                    $('.att_form_data .images-part img').attr('src' , ($('#uploadPic').contents().find("p").html().toString()) );
+                    $('.att_form_data .content-part').css('visibility' , 'hidden');
+                    $('.att_form_data .content-part').attr('disabled' , 'disabled');
+
+                }
+            });
+
+        });
+    </script>
+
+
+{% endblock %}

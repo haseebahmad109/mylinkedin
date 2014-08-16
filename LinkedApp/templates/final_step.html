@@ -1,0 +1,57 @@
+{% extends 'master2.html' %}
+{% load static %}
+
+
+{% block title %}World's Largest Professional Network | LinkedIn{% endblock %}
+
+{% block includeStyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/screen4(joinIn).css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/api_email.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/reg_page2.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/final_step.css" %}" />
+
+{% endblock %}assets/css/reg_page2.css
+
+{% block rightLinks %}
+{% endblock %}
+
+{% block whiteBoxContainer %}
+    <div class="reg2-header">
+        <div class="bottom-border-header">
+            <h1 class="Blue-Text"><strong>Congratulations! You've just created Your professional profile</strong></h1>
+        </div>
+        <div>
+            <div>
+            <div class="main_box" >
+                <div id="content_part">
+                    <div class="profile_part">
+                    <h1 id="name">{{ user.first_name }}</h1>
+                    <h2 id="job">{{ user.country }} </h2>
+                </div>
+                     <div id="link_part">
+
+                    <div id="url-box">
+                        <textarea rows="4" cols="64" maxlength="420">just joined LinkedIn and created my professional profile. Join my network. {{ BASE_URL }}/user/{{ user.id }}</textarea>
+                    </div>
+                       <label id="profile-link">Your profile URL: <a href="/user/{{ user.id }}">{{ BASE_URL }}/user/{{ user.id }}</a></label>
+                </div>
+
+                <div class="clear"></div>
+                <label class="hide empty" >empty label:</label>
+                <div>
+
+                </div>
+            </div>
+
+             <div id="skipping"><a href="/logged-in-view/" >Skip this step</a></div>
+            </div>
+
+        </div>
+    </div>
+ </div>
+
+{% endblock %}
+
+{% block userAgreement %}
+
+{% endblock %}

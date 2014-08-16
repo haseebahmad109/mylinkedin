@@ -1,0 +1,9 @@
+<div class="border-bottom comment-box">
+    <span class="icon-comment"></span>
+    <img style="border: none;" class="medium-profile-pic-icon" src="/media/{{ comment.of_whom.profile_pic }}">
+    <div class="top-align single-comment" >
+        <a href="/user/{{ comment.of_whom.id }}" class="unbold top-align go-blue">{{ comment.of_whom.get_full_name }}</a>
+        <span style="display: inline-block; word-wrap: break-word;width: 425px;" class="top-align simple-text">{{ comment.comment_text }}</span>
+    </div>
+    <div style="clear: both"></div>
+</div>

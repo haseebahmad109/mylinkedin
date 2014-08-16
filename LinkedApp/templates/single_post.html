@@ -1,0 +1,76 @@
+<div id="cc{{ post.id }}cc" class="single-post {{ post.id }}" >
+    <div class="simple-container">
+        <div class="status-box">
+            <div class="profile-pic-container">
+                <img src="/media/{{ post.of_whom.profile_pic }}"/>
+            </div>
+            <div style="word-wrap: break-word;" class="status-container">
+                <div>
+                    <a class="bold-blue-text" href="/user/{{ post.of_whom.id }}">{{ post.of_whom.get_full_name }}</a>
+                </div>
+                <div style="width:450px;word-wrap: break-word;" class="text status-text-box">
+                    {{ post.simple_text }}
+                </div>
+                <div class="posted">
+                    <div class="no-margin attachments-or-links">
+                        {% if post.attached_image %}
+                            <div class="images-part">
+                                <img src="/media/{{ post.attached_image }}" alt=" "/>
+                            </div>
+                        {% endif %}
+                        <div class="content-part">
+                            <a class="no-decoration" target="_blank" href="{{ post.link }}"><p
+                                    class="simple-small-heading go-blue">{{ post.link_subject }}</p></a>
+                            <span class="simple-text bold"></span>
+                            <span class="simple-text">{{ post.link_description }}</span>
+                        </div>
+                        <div style="margin-bottom: 5px;">
+                            <span class="like gray-text go-blue no-decoration">Like  (<span>{{ post.like_set.all|length }}</span>)</span>
+                            <input class="which-input" type="hidden" name="which-post" value="{{ post.id }}"/>
+                            <span class="icon-dot"></span>
+                            <span class="comment-open comment gray-text go-blue no-decoration">Comment</span>
+                        </div>
+                        <div class="light-gray-background">
+                            <div class="border-bottom like-people">
+                                <span class="icon-like"></span>
+                                {% for like in post.like_set.all|dictsortreversed:"id" %}
+                                    {% if not forloop.first %} , {% endif %}
+                                    {% if like.of_which_user.id != user.id %}
+                                    <a style="font-size: 12px;" href="/user/{{ like.of_which_user.id }}" class="go-blue">
+                                        {{ like.of_which_user.get_full_name }}
+                                    </a>
+                                    {% else %}
+                                    <a style="font-size: 13px;" href="/user/{{ user.id }}" class="go-blue">
+                                        you
+                                    </a>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="comment-container {{ post.id }}">
+                            {% for comment in post.comment_set.all %}
+                            <div class="border-bottom comment-box">
+                                <span class="icon-comment"></span>
+                                <img style="border: none;" class="medium-profile-pic-icon" src="/media/{{ comment.of_whom.profile_pic }}">
+                                <div class="top-align single-comment" >
+                                    <a href="/user/{{ comment.of_whom.id }}" class="unbold top-align go-blue">{{ comment.of_whom.get_full_name }}</a>
+                                    <span style="display: inline-block; word-wrap: break-word;width: 425px;" class="top-align simple-text">{{ comment.comment_text }}</span>
+                                </div>
+                                <div style="clear: both"></div>
+                            </div>
+                            {% endfor %}
+                            </div>
+                            <div class="comment-submit-container comment-box">
+                                <textarea id="{{ post.id }}" name="comment" placeholder="Add a comment ..,"></textarea><br>
+                                <input type="button" class="primary-blue-button comment-submit" value="comment"/>
+                                <input class="which-input" type="hidden" name="which-post" value="{{ post.id }}" />
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

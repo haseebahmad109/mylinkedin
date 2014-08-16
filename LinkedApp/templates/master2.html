@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" type="image/x-icon"  href="{% static "assets/favicon.ico"  %}"   />
+	<!--Styles-->
+    <link rel="stylesheet" href="{% static "assets/css/style.css" %}"  />
+    {% block includeStyles %}
+    {% endblock %}
+	<!---------->
+</head>
+<body>
+	<header >
+        <div class="middle-wrap" >
+            {% block wrappedHeader %}
+                <div id="black-logo">
+                    {% block leftLogo %}
+			            <a href="/"><img title="logo" src="{% static "assets/images/logo_linkedin_92x22.png" %}" /></a>
+                    {% endblock %}
+                </div>
+                <ul class="menu-ul">
+                    {% block rightLinks %}
+
+                    {% endblock %}
+                </ul>
+                <div class="clear"></div>
+            {% endblock %}
+        </div>
+	</header>
+
+    <div class="main-body">
+        {% block mainBody %}
+        <div class="white-box middle-wrap">
+            {% block whiteBox %}
+            <div id="container">
+                {% block errorBlock %}
+                <div id="error-global" class="global-error-box{% if not myErrors %}{{ ' hidden' }}{% endif %}">
+                    <div class="error-message-box">
+                        <p>
+                            {% for error in myErrors %}
+                                {{ error|safe }}
+                            {% endfor %}
+                        </p>
+                    </div>
+                </div>
+                {% endblock %}
+                {% block whiteBoxContainer %}
+                {% endblock %}
+            </div>
+            {% endblock %}
+            {% block userAgreement %}
+            {% endblock %}
+        </div>
+        {% endblock %}
+    </div>
+    <footer class="middle-wrap">
+        {% block footer %}
+            <p class="small-text-gray">LinkedIn Corporation © 2013 | Commercial use of this site without express authorization is prohibited.</p>
+        {% endblock %}
+    </footer>
+
+	<!--Scripts-->
+	<script src="{% static "assets/javascript/jquery.js" %}" ></script>
+	<script src="{% static "assets/javascript/script.js" %}" ></script>
+    {% block addScripts %}
+    {% endblock %}
+	<!----------->
+</body>
+</html>

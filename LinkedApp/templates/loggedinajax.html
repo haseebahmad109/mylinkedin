@@ -1,0 +1,8 @@
+{% load endless %}
+{% lazy_paginate 3,3 posts %}
+{% for post in posts %}
+    {% if post.share_type == "connections" and post.of_whom in connected_users or post.share_type == "public" or post.of_whom == user %}
+        {% include "single_post.html" %}
+    {% endif %}
+{% endfor %}
+{% show_more %}

@@ -1,0 +1,65 @@
+<!-------------------------------------------------------->
+
+{% extends 'master1.html' %}
+{% load static %}
+
+{% block title %}
+    LinkdedIN | Sign In
+{% endblock %}
+
+{% block includeStaticFiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/screen5(SignIn).css" %}" />
+{% endblock %}
+
+{% block errorBlock %}
+{% endblock %}
+
+{% block bodyMidllepart %}
+    <div class="main-content">
+            <!----------------------------------------------->
+            <div id="main-heading-container" >
+                <h1>Sign in to LinkedIn</h1>
+            </div>
+            <div id="e-box" class="error-box{% if not myErrors %}{{ ' hidden' }}{% endif %}" >
+                <div id="error-box-global" class="error-box" >
+                    <div class="error-message-box">
+                        <p>{% for error in myErrors %}{{ error }}{% endfor %}</p>
+                    </div>
+                </div>
+            </div>
+            <form action="/sign-in/" method="post">{% csrf_token %}
+                <div class="sign-in-white-box" >
+                    <div class="sign-in-white-box-container">
+                        <label>Email address:</label>
+                        <div class="input-box">
+                            <span id="email_err" class="error">{{ form.username.errors }}</span>
+                            {{ form.username }}
+                            <div class="clear"></div>
+                        </div>
+                        <label>Password:</label>
+                        <div class="input-box">
+                            <span id="pass_err" class="error">{{ form.password.errors }}</span>
+                            {{ form.password }}
+                            <a id="forgot-password" href="/password-reset/">Forgot password?</a>
+                            <div class="clear"></div>
+                        </div>
+                        <label class="hide" >emptylabel</label>
+                        <div class="submit-button-sign-in-container input-box">
+                            <input id="submit-Signin" class="btn-primary" type="submit" value="Sign In" />
+                            or <a href="/join-in/">Join LinkedIn</a>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </form>
+            <div class="clear"></div>
+            <!----------------------------------------------->
+    </div>
+{% endblock %}
+
+{% block main_footer_part1 %}
+    <!--------No Part1 Of Footer in this page ----->
+{% endblock %}
+
+<!-------------------------------------------------------->

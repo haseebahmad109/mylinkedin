@@ -1,0 +1,58 @@
+{% extends 'master2.html' %}
+{% load static %}
+
+
+{% block title %}World's Largest Professional Network | LinkedIn{% endblock %}
+
+{% block includeStyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/screen4(joinIn).css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/api_email.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/reg_page2.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/invite_friends.css" %}" />
+
+{% endblock %}
+
+{% block rightLinks %}
+{% endblock %}
+
+{% block whiteBoxContainer %}
+
+    <div class="reg2-header">
+        <div class="bottom-border-header">
+            <h1 class="Blue-Text">connect with people you know in mylinkedin</h1>
+        </div>
+        <div>
+            <p>Stay in touch with your contacts who aren't on Linkedin yet. Invite them to connect with you</p>
+            <form method="post" action="/sending_emails/">{% csrf_token %}
+            <div class="contact_box_header">
+                <input class="checkAll" type="checkbox"/>Select All
+            </div>
+            <div class="checkBoxes contact_box_middle_friends">
+                {% for email in emails %}
+                <div class="single_contacts_friends">
+                    <div class="contact-info">
+                        <input type="checkbox" name="InviteUsers" value="{{ email }}">
+
+                        <div class="clear"></div>
+                    </div>
+                    <div class="contact-info">
+
+                        <label><strong>{{ email }}</strong></label>
+                    </div>
+                    <div id="email_part"> {{ email }}</div>
+                    <div class="clear"></div>
+                </div>
+               {% endfor %}
+                <div class="clear"></div>
+            </div>
+            <div class="submit-connections-mail">
+                <input type="submit" id="submit-contacts-email" class="btn-tertiary" value="Add to Network"><a href="/final-step/">Skip this step</a>
+            </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block userAgreement %}
+
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends 'master1.html' %}
+{% load static %}
+
+<!------------------------------------------------------------------>
+{% block title %}World's Largest Professional Network | LinkedIn{% endblock %}
+
+{% block includeStaticFiles %}
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/screen1(mainHome).css" %}" />
+{% endblock %}
+
+{% block bodyMidllepart %}
+        <div class="middle-upper">
+            <div class="middle-upper-left-part">
+                <h1>Over 225 million professionals use LinkedIn to exchange information, ideas and opportunities</h1>
+                <ul>
+                    <li id="reconnect">Stay informed about your contacts and industry</li>
+                    <li id="answers">Find the people & knowledge you need to achieve your goals</li>
+                    <li id="power">Control your professional identity online</li>
+                </ul>
+            </div>
+            <div class="middle-upper-right-part">
+                <div class="joinIn-box">
+                    <div class="joinIn-box-header">
+                        <h2>Join LinkedIn Today</h2>
+                    </div>
+                    <div class="clear"></div>
+
+                    <div class="joinIn-box-bottom">
+
+                        <form action="/" method="post">{% csrf_token %}
+                            <div id="join-form-main" >
+                                    <label>First Name:</label>
+                                    <div class="join-form-input-boxes">
+                                        <span id="f_name-error" class="error">{{ form.first_name.errors }}</span>
+                                        {{ form.first_name }}
+                                    </div>
+                                    <label>Last Name:</label>
+                                    <div class="join-form-input-boxes">
+                                        <span id="l_name-error" class="error">{{ form.last_name.errors }}</span>
+                                        {{ form.last_name }}
+                                    </div>
+                                    <label>Email:</label>
+                                    <div class="join-form-input-boxes">
+                                        <span id="e-error" class="error">{{ form.email.errors }}</span>
+                                        {{ form.email }}
+                                    </div>
+                                    <label>Password:</label>
+                                    <div class="join-form-input-boxes">
+                                        <span class="error" id="p-error">{{ form.password.errors }}</span>
+                                        {{ form.password }}
+                                    </div>
+                                <div class="clear"></div>
+                            </div>
+
+                            <label id="info">6 or more charactors</label>
+                            <div class="clear"></div>
+                            <p id="joinNow"><input id="submit-join-form-main-page" class="submit btn-tertiary" type="submit" value="Join Now" /> <span>*</span></p>
+
+                            <p id="already">Already on LinkedIn?<a href="/sign-in/"> Sign In</a></p>
+                        </form>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="middle-middle-part .wrap-middle" >
+            <div class="content">
+                <form>
+                    <label>Search for someone by name: </label><input type="text" required="required" placeholder="First Name" /><input placeholder="Last Name" required="required" type="text" /><input id="submit-search-by-name" class="btn-secondary" type="submit" value="Go" />
+                </form>
+                <div class="member-list-alphabets">
+                    <p class="LinkedIn-member-directory">LinkedIn member directory:</p>
+                    <ul class="LinkedIn-member-directory-list">
+                        <li><a href="/default-for-links/">a</a></li>
+                        <li><a href="/default-for-links/">b</a></li>
+                        <li><a href="/default-for-links/">c</a></li>
+                        <li><a href="/default-for-links/">d</a></li>
+                        <li><a href="/default-for-links/">e</a></li>
+                        <li><a href="/default-for-links/">f</a></li>
+                        <li><a href="/default-for-links/">g</a></li>
+                        <li><a href="/default-for-links/">h</a></li>
+                        <li><a href="/default-for-links/">i</a></li>
+                        <li><a href="/default-for-links/">j</a></li>
+                        <li><a href="/default-for-links/">k</a></li>
+                        <li><a href="/default-for-links/">l</a></li>
+                        <li><a href="/default-for-links/">m</a></li>
+                        <li><a href="/default-for-links/">n</a></li>
+                        <li><a href="/default-for-links/">o</a></li>
+                        <li><a href="/default-for-links/">p</a></li>
+                        <li><a href="/default-for-links/">q</a></li>
+                        <li><a href="/default-for-links/">r</a></li>
+                        <li><a href="/default-for-links/">s</a></li>
+                        <li><a href="/default-for-links/">t</a></li>
+                        <li><a href="/default-for-links/">u</a></li>
+                        <li><a href="/default-for-links/">v</a></li>
+                        <li><a href="/default-for-links/">w</a></li>
+                        <li><a href="/default-for-links/">x</a></li>
+                        <li><a href="/default-for-links/">y</a></li>
+                        <li><a href="/default-for-links/">z</a></li>
+                        <li><a href="/default-for-links/">more</a></li>
+                    </ul>
+                </div>
+                <div class="search-by-country">
+                    <p class="LinkedIn-member-directory">Browse members </p><a href="/search-by-country/"> by country</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-useragreement">
+                <p class="LinkedIn-member-directory">* By joining LinkedIn, you agree to LinkedIn's <a href="/user-agreement/">User Agreement</a>, <a href="/privacy-policy/">Privacy Policy</a> and <a href="/cookie-policy/">Cookie Policy</a>.</p>
+        </div>
+{% endblock %}
+
+
+<!------------------------------------------------------------------>

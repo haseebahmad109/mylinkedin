@@ -1,0 +1,80 @@
+{% extends 'master2.html' %}
+{% load static %}
+
+
+{% block title %}World's Largest Professional Network | LinkedIn{% endblock %}
+
+{% block includeStyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/screen4(joinIn).css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/api_email.css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/reg_page2.css" %}" />
+
+{% endblock %}assets/css/reg_page2.css
+
+{% block rightLinks %}
+{% endblock %}
+
+{% block whiteBoxContainer %}
+    <div class="reg2-header">
+        <div class="bottom-border-header">
+            <h1 class="Blue-Text">connect with people you know in mylinkedin</h1>
+        </div>
+        <div>
+            <p>We found {{ email|length }} people you know on LinkedIn. Select the people you would like to connect to</p>
+            <div class="contact_box_header">
+                <input class="checkAll" type="checkbox"/>Select All
+            </div>
+            <form id="add_connection_form" method="post" action="/email-invite-connection/" onsubmit="return addConnections()">{% csrf_token %}
+                <div class="checkBoxes contact_box_middle">
+
+                        {% for email in emails %}
+                            {% if email != user and email not in connected_users and email not in invited_users %}
+                                <div class="single_contact">
+                                    <div class="contact-info">
+                                        <input name="connectUser" value="{{ email.id }}"  type="checkbox">
+                                        <div class="pic">
+                                            <img style="width: inherit;height: inherit;" src="/media/{{ email.profile_pic }}">
+                                        </div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="contact-info">
+                                        <label>{{ email.email }}</label>
+                                    </div>
+                                    <div class="clear"></div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="clear"></div>
+
+                </div>
+                <div class="submit-connections-mail">
+                    <input style="margin-left: 0px;margin-right: 10px;" id="add_conection_submit" type="submit" id="submit-contacts-email" class="btn-tertiary" value="Add connection(s)"><a href="/invite_friends/">Skip this step</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block userAgreement %}
+
+{% endblock %}
+
+{% block addScripts %}
+    <script>
+        function addConnections(){
+            var preserverForm = $('#add_connection_form').serialize();
+            $('#container').html("<center><img src='/static/assets/images/anim_loading_16x16.gif' /></center> ");
+            $.ajax({
+                type:"post",
+                url:"/email-invite-connection/",
+                data:preserverForm,
+                success:function (msg){
+                    if (msg['message'] == "yes"){
+                        $('#container').html('Invitation as been sent to selected users </br><a href="/invite_friends/">Go to next step</a>')
+                    }
+                }
+            });
+            return false;
+        }
+    </script>
+{% endblock %}

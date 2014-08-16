@@ -1,0 +1,152 @@
+{% extends 'master2.html' %}
+{% load static %}
+
+{% block title %}World's Largest Professional Network | LinkedIn{% endblock %}
+
+{% block includeStyles %}
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/screen4(joinIn).css" %}" />
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/reg_page2.css" %}" />
+{% endblock %}
+
+{% block rightLinks %}
+{% endblock %}
+
+{% block whiteBoxContainer %}
+    <div class="reg2-header">
+        <div class="bottom-border-header">
+            <h1 class="Blue-Text"><strong>{{ user.first_name }}</strong>, let's start creating your professional profile</h1>
+        </div>
+        <div>
+            <div>
+                <form id="reg-2-form" method="post" enctype="multipart/form-data" action="/reg-step-2/">{% csrf_token %}
+                    <div class="reg-step-2" >
+                        <section >
+                            <label>* Country</label>
+                            <div>
+                                <span class="error">{{ form.country.errors }}</span>
+                                {{ form.country }}
+                            </div>
+                            <label>Postal Code:</label>
+                            <div>
+                                <span class="error">{{ form.postal_code.errors }}</span>
+                                {{ form.postal_code }}
+                            </div>
+                            <label>I am currently:</label>
+                            <div class="radio-buttons">
+                                <span class="error">{{ form.user_type.errors }}</span>
+                                {{ form.user_type }}
+                            </div>
+                            <section id="employed">
+                                <label>* Job Title</label>
+                                <div>
+                                    <span class="error">{{ form.job_title.errors }}</span>
+                                    {{ form.job_title }}
+                                </div>
+                                <label class="hide empty">empty label</label>
+                                <div>
+                                    <span class="error">{{ form.self_employed.errors }}</span>
+                                    {{ form.self_employed }}<label class="selfLabel" id="selfemployed" for="id_self_employed">I am self employed</label>
+                                </div>
+                                <section id="company">
+                                    <label>* Company</label>
+                                    <div>
+                                        <span class="error">{{ form.Company.errors }}</span>
+                                        {{ form.Company }}
+                                    </div>
+                                </section>
+                                <section id="industry">
+                                    <label>* Industry</label>
+                                    <div>
+                                        <span class="error">{{ form.Industry.errors }}</span>
+                                        {{ form.Industry }}
+                                    </div>
+                                </section>
+                            </section>
+                            <section id="job-seeker">
+                                <label>* Most Recent Job Title</label>
+                                <div>
+                                    <span class="error">{{ form.most_recent_job_title.errors }}</span>
+                                    {{ form.most_recent_job_title }}
+                                </div>
+                                <label class="hide empty">empty label</label>
+                                <div>
+                                    <span class="error">{{ form.self_employed_2.errors }}</span>
+                                    {{ form.self_employed_2 }}<label class="selfLabel" id="selfemployed_2" for="id_self_employed_2">I am self employed</label>
+                                </div>
+                                <section id="company1">
+                                    <label>* Most Recent Company</label>
+                                    <div>
+                                        <span class="error">{{ form.company.errors }}</span>
+                                        {{ form.company }}
+                                    </div>
+                            </section>
+                            <section id="industry1">
+                                <label>* Industry</label>
+                                <div>
+                                    <span class="error">{{ form.Industry2.errors }}</span>
+                                    {{ form.Industry2 }}
+                                </div>
+                            </section>
+                            <label>* Time Period</label>
+                            <div>
+                                <span class="error">{{ form.time_period_from_industry.errors }}</span>
+                                {{ form.time_period_from_industry }}  to
+                                <span class="error">{{ form.time_period_to_industry.errors }}</span>
+                                {{ form.time_period_to_industry }}
+                            </div>
+                            </section>
+                            <section id="student">
+                                <label>* School/University</label>
+                                <div>
+                                    <span class="error">{{ form.institution.errors }}</span>
+                                    {{ form.institution }}
+                                </div>
+                                <label>* Time Period</label>
+                                <div>
+                                    <span class="error">{{ form.time_period_from_student.errors }}</span>
+                                    {{ form.time_period_from_student }}  to
+                                    <span class="error">{{ form.time_period_to_student.errors }}</span>
+                                    {{ form.time_period_to_student }}
+                                </div>
+                                <label class="empty hide">empty label</label>
+                                <div>
+                                    <p class="small-text-gray">Current students: enter your expected graduation year</p>
+                                </div>
+                            </section>
+                            <div class="clear"></div>
+                        </section>
+                        <label class="hide empty" >empty label:</label>
+                        <div>
+                            <input class="btn-tertiary" type="submit" />
+                        </div>
+                    </div>
+                </form>
+                <section id="picForm">
+                    <div id="prof-image-viewer">
+                        <img class="prof-pic" title="ProfilePic" src="/media/{{ user.profile_pic }}" />
+                    </div>
+                    <form id="uploadForm" method="post" action="/upload-image/" enctype="multipart/form-data" target="uploadPic" >{% csrf_token %}
+                        <span class="error">{{ form2.pic.errors }}</span>
+                        {{ form2.pic }}
+                    </form>
+                    <br/>
+                    <p id="msg-pic"></p>
+                </section>
+                <div class="clear"></div>
+            </div>
+            <iframe id="uploadPic" name="uploadPic" width="0" height="0" ></iframe>
+            <div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block userAgreement %}
+{% endblock %}
+
+{% block addScripts %}
+    <script type="text/javascript">
+        
+    </script>
+{% endblock %}

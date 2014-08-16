@@ -1,0 +1,85 @@
+{% extends "Messages.html" %}
+{% load static %}
+
+
+
+{% block layout_change %}
+    <div class="typeahead-results-container yui-ac-container" style="position: relative; left: 83px; top: 93px;">
+        <div class="yui-ac-content" style="display:none">
+            <div class="yui-ac-hd" style="display: none;"> </div>
+            <div class="yui-ac-bd">
+                <ul class="hasImage">
+
+                </ul>
+            </div>
+
+        </div>
+        </div>
+
+
+{#    <form method="post" action="" >{% csrf_token %}#}
+
+        <ul class="inbox-actions">
+
+            <li><input type="submit" id="sub1" value="Send Message" class="btn-quaternary"></li>
+            <li><a class="btn-quaternary" title="Cancel" href="/messages/"><span>Cancel</span></a></li>
+        </ul>
+
+        <div class="inbox-item-header">
+            <ul>
+                <li class="to">
+                <a href="#" title="Click here for your LinkedIn address book" id="connection-chooser">
+                    <img src="{% static "assets/images/icon_abook_16x1.gif" %}" class="icon-chooser" alt="Address Book"></a>
+                <label for="recipients" id="recipients-composeForm-label">To:</label>
+                <div class="elem"><span class="error" style="display:none;" id="recipients-composeForm-error">Please select at least one connection.<br></span>
+                    <div id="ccAutoComplete">
+                        <div id="ccAutoCompleteSpacer"></div>
+                        <div id="ccInputHolder">
+                            <input type="text" id="ccInput" value="" name="persons" class="yui-ac-input" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="ac"><div id="ccContainer" class="inpt"></div></div>
+                </div>
+            </li>
+                <li><label for="senderEmail" id="senderEmail-composeForm-label">From:</label>
+                    <div class="elem"><span class="error" style="display:none;" id="senderEmail-composeForm-error"></span>{{ user.first_name }}{{ user.last_name }} &lt;{{ user.email }}&gt;
+                        <input type="hidden" name="senderEmail" id="senderEmail-composeForm" value="630574043"></div></li>
+                <li><label for="subject" id="subject-composeForm-label">Subject:</label>
+                    <div class="elem"><span class="error" style="display:none;" id="subject-composeForm-error">Please enter a subject.<br></span>
+                        <input type="text" id="subject-composeForm" value="" name="subject" class="input-text" maxlength="150">
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+        <span class="error" style="display:none;" id="body-composeForm-error">Please enter a message.<br></span>
+
+        <div class="inbox-item-body">
+            <textarea cols="25" rows="5" id="body-composeForm" name="body"></textarea>
+            <div class="inbox-item-body-primary">
+                <ul class="inbox-actions">
+                    <li><input id="sub2" type="submit" value="Send Message" class="btn-ternary"></li>
+                    <li><a id="just" class="btn-quaternary" title="Cancel" href="/messages/=">
+                        <span>Cancel</span></a>
+                    </li>
+                </ul>
+            </div>
+            <p class="lastwords" style="margin-bottom: 0;">
+                <input type="checkbox" id="showRecipients-composeForm" value="showRecipients" name="showRecipients" checked="">
+                <label for="showRecipients" id="showRecipients-composeForm-label">Allow recipients to see each other's names and email addresses</label>
+            </p>
+
+            <p class="lastwords">
+                <input type="checkbox" id="ccSender-composeForm" value="ccSender" name="ccSender">
+                <label for="ccSender" id="ccSender-composeForm-label">Send me a copy</label>
+            </p>
+
+        </div>
+{#    </form>#}
+
+
+
+{% endblock %}
+
+

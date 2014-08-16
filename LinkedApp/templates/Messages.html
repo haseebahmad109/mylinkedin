@@ -1,0 +1,263 @@
+{% extends "dashboard_header.html" %}
+{% load static %}
+
+{% block head_includes %}
+    <link rel="stylesheet" type="text/css" href="{% static "assets/css/Messages.css" %}" />
+     <link rel="stylesheet" type="text/css" href="{% static "assets/css/Compose_Message.css" %}" />
+{% endblock %}
+
+{%  block more_headers %}
+{% endblock %}
+
+{% block title %}
+    Message | LinkedIN
+{% endblock %}
+
+{% block middle %}
+
+    <div id ="main-body">
+      <div  style="overflow: hidden; padding-bottom: 50px;">
+        <div id="sidebar" class="sidebar ads-v2">
+
+            <div id="inbox-nav">
+              <ul>
+                  <li class="nav-search ">
+                        <form action="" method="POST" name="inboxSearchForm" >
+                            <span class="error" id="keywords-inboxSearchForm-error"></span>
+                            <input type="text" name="keywords" value="" id="keywords-inboxSearchForm" class="text" placeholder="Search Inbox">
+                            <input class="search-go" type="submit" value="Search" name="search">
+
+                        </form>
+                  </li>
+
+                <li class="nav-compose  notTop">
+                    <a href="/compose_message/"><em>Compose Message</em></a>
+                </li>
+                <li id="in" class="nav-inbox active"><a href="/messages/">Inbox</a></li>
+                <li class="nav-sent"><a href="/sent/">Sent</a></li>
+                <li class="nav-archived "><a href="">Archived</a></li>
+                <li class="nav-trash "><a href="">Trash</a></li>
+              </ul>
+            </div>
+
+
+        </div>
+
+
+    <div id="content" class="inbox-v2 ads-v2">
+
+            <div id="inbox-tabview" class="inbox-tabview">
+
+
+
+<ul class="tabs-v2 inbox-tabview-nav">
+  <li id="msg_tab" class="selected">
+    <a href="/messages/">
+      <em>Messages</em>
+      <span class="message-count count ">{{ inbox_messages|length }}</span>
+      <span class="message-count count null-count">0</span>
+    </a>
+  </li>
+  <li id="invite_tab" class="">
+    <a href="/invitations/">
+      <em>Invitations</em>
+      <span class="invitation-count count ">{{ invitations|length }}</span>
+      <span class="blocked-invitation-count count null-count">0</span>
+    </a>
+  </li>
+</ul>
+
+
+
+              <div class="content" style="">
+                {%  block layout_change %}
+                    {%endblock%}
+
+            </div>
+
+    </div>
+
+
+</div>
+   <div id="ad-box">
+    <div id="ads">
+        <a>
+            <img src="{% static "assets/images/18103883013699635782.jpg" %}" border="0" width="300" height="250" alt="" class="img_ad">
+       </a>
+    </div>
+</div>
+
+</div>
+    <div style="overflow: hidden; padding-bottom:15px">
+        <div id="just-extra" style=" float:left; height:255px"></div>
+        <div id="other_image" style="float:right; width:300px; height:255px;">
+            <a><img src="{% static "assets/images/prof_dsply_300x250_4_v1.png" %}" alt="Advertise on LinkedIn" border="0"></a>
+        </div>
+    </div>
+        <div class="ad-block h-730x90" id="ad-slot-2">
+            <a><img src="{% static "assets/images/revised-jymbii-728x90.gif" %}" alt="Advertise on LinkedIn" border="0"></a>
+        </div>
+
+</div>
+
+{% endblock %}
+
+
+
+
+{% block script_include %}
+    <script type="text/javascript" src="{% static "assets/javascript/jquery-ui-1.10.3.custom.min.js" %}"></script>
+
+
+    <script type="text/javascript">
+
+
+
+
+
+    $('.close-confirmation').click(function(){
+        var save= $(this).attr('id');
+        $('#confirm' + save).hide();
+        $('#ignr'+save).hide();
+        $('#data-row'+ save).hide();
+    });
+
+
+
+        $('#sub1, #sub2').click(function(){
+
+
+        var match = true;
+
+        if (message_people.length==0) {
+
+            $('#recipients-composeForm-error').show();
+            match = false;
+        }
+        else
+        {
+            $('#recipients-composeForm-error').hide();
+        }
+
+        if ($("#subject-composeForm").val() == "") {
+
+            $('#subject-composeForm-error').show();
+            match = false;
+        }
+        else
+        {
+            $('#recipients-composeForm-error').hide();
+        }
+
+        if ($("#body-composeForm").val() == "") {
+
+            $('#body-composeForm-error').show();
+            match = false;
+        }
+        else
+        {
+            $('#recipients-composeForm-error').hide();
+        }
+
+         if (match == true)
+         {
+             var json_string = JSON.stringify(message_people);
+
+            $.ajax({
+                type:"post",
+                url:"/send_message/",
+                data:{ 'Subject':$('#subject-composeForm').val() , 'Message_body': $('#body-composeForm').val(), 'ids[]' : message_people },
+                error:function(){
+
+                }
+            }).done(function(msg){
+
+
+                        message_people.length=0;
+                    document.write(msg);
+            });
+             return true;
+
+
+         }
+        else return false;
+
+    });
+
+
+
+        $('#ccInput').keyup(function(){
+
+            $.ajax({
+                type:"get",
+                url:"/message_result/",
+                data:{ 'search_query': $(this).val()   },
+                error:function(){
+
+                }
+            }).done(function(msg){
+
+                    if (msg != ""){
+                        $('.hasImage').html(msg);
+                        $('.yui-ac-content').show();}
+                    else{
+                        $('.yui-ac-content').hide();
+                    }
+            });
+        });
+
+    var message_people=[];
+
+    $(".hasImage").on("click", ">li", function(){
+
+        var idd= $(this).attr('id');
+        var z = $(this).attr('value');
+        message_people.push(z);
+
+
+      $('#ccAutoCompleteSpacer').after('<div id="'+ idd +'" class="ccCon"><p><span id="191679546">'+idd+'</span><span class="ccCloseBtn" id="'+z+'"> X</span></p></div>');
+        $('.yui-ac-content').hide();
+        $('#ccInput').val(' ');
+        $('#ccInput').attr("value",message_people);
+
+    });
+
+ $('#ccAutoComplete').on('click', '.ccCloseBtn', function(){
+        match=0;
+        v=$(this).attr('id');
+        parent_id=$(this).parent().parent().attr('id');
+
+        ind = 0;
+
+        for(var i=message_people.length-1; i>=0;i--)
+            {
+                if(message_people[i]==v)
+                {
+                    match=1;
+                    ind=i;
+                    break;
+                }
+            }
+
+            if(match==1)
+            {
+                message_people.splice(i,1);
+            }
+
+        $('#ccInput').attr("value",message_people);
+
+         $('#'+parent_id).hide();
+    });
+
+
+    $('#just').click(function(){
+
+        q=$('#ccInput').val();
+
+    });
+
+
+
+    </script>
+
+{% endblock %}

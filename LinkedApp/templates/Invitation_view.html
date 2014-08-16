@@ -1,0 +1,182 @@
+{% extends "Messages.html" %}
+{% load static %}
+
+{% block layout_change %}
+
+<div id="invitations" class=" ">
+
+          <div class="new-bulk">
+            <a class="new-link btn-quaternary" href="">Add connections</a>
+            <ul class="bulk">
+
+              <li><input class="btn-quaternary" type="submit" name="bulkInvitationAccept" value="Accept" disabled=""></li>
+              <li><input class="btn-quaternary" type="submit" name="bulkInvitationIgnore" value="Ignore" disabled=""></li>
+
+            </ul>
+          </div>
+
+          <div class="select-filters-sort">
+            <a class="hide-blocked" href="">
+              Hide blocked invites
+            </a>
+            <div class="select">
+                <h4>Select:</h4>
+              <ul>
+                <li><a class="select-all" href="#">All</a></li>
+                <li><a class="select-none disabled" href="#">None</a></li>
+              </ul>
+            </div>
+          </div>
+
+      <ol class="inbox-list ">
+    {% for invite in invitations %}
+      <li id="data-row{{ invite.id }}" class="inbox-item invitation-item">
+        <input class="chk" type="checkbox"  >
+                <img class="photo" src="/media/{{ invite.sender_id.profile_pic }}"  height="40" width="40">
+                <div class="item-content">
+{#                  <div class="date">Nov 21</div>#}
+                      <span class="participants">
+                          <span class="new-miniprofile-container ">
+                              <strong>
+                                      <a href="">
+                                        {{ invite.sender_id.first_name }} {{ invite.sender_id.last_name }}
+                                      </a>
+                              </strong>
+                          </span>
+                       </span>
+
+                      <span class="headline">
+                        {% if invite.sender_id.user_type == "Student" %}
+                                        Student at {% for e in invite.sender_id.student_set.all %}{{ e.School_University }},{% endfor %}
+                                    {% elif invite.sender_id.user_type == "Employed" %}
+                                        Works at {% for e in invite.sender_id.employed_set.all %}{{ e.Company }},{% endfor %}
+                                    {% elif invite.sender_id.user_type == "Job Seeker" %}
+                                        Worked at {% for e in invite.sender_id.jobseeker_set.all %}{{ e.MostRecentCompany }},{% endfor %}
+                                    {% endif %}
+                      </span>
+
+                      <p class="meta">
+
+                          <span class="note">
+                            {{ user.first_name }},
+
+        I'd like to add you to my professional network on LinkedIn.
+
+        - {{ invite.sender_id.first_name }}
+                          </span>
+                      </p>
+
+
+      <div class="inbox-actions">
+        <ul>
+          <li style="margin-top: 3px;">
+                <div class="primary-actions" id="control_gen_10">
+                  <span class="btn-menu btn-ternary btn-split">
+                      <a id="accepting" name="invite_no" value="{{ invite.id }}" class="accept btn btn-ternary" >Accept</a>
+
+                      <span class="toggle-btn"></span></span><ul style="display: none;">
+
+                      <li id="yui-gen0" style="display: none;"></li>
+
+                      <li>
+                            <a class="reply reply-to-invite" href="" >Reply (don’t accept yet)</a>
+                        </li>
+                      </ul>
+                    </div>
+
+          </li>
+
+            <li>
+
+            <a id="ignoring" name="invite_no" value="{{ invite.id }}" class="ignore btn-quaternary" style="cursor:pointer">Ignore</a>
+
+            </li>
+
+            <li class="invitation-report-abuse">
+
+            <a data-action="invitationReportAbuse"  class="report-spam btn-quaternary" href="">Report Spam</a>
+    </li>
+
+        </ul>
+      </div>
+    </div>
+  </li>
+
+
+<div id="confirm{{ invite.id }}"class="confirmation" style="display:none;">
+  <a class="inviter-pic-lnk" href="/user/{{ invite.id }}">
+
+        <img class="connection-pic" height="40" src="/media/{{ invite.sender_id.profile_pic }}" width="40">
+  </a>
+  <div class="body item-content">
+    <a class="inviter-name" href="/user/{{ invite.id }}">{{ invite.sender_id.first_name }}</a>
+    <span class="item-content-msg">is now a connection!</span>
+
+      <a class="inviter-send-msg" href="">Send a message</a>
+  </div>
+  <span id="{{  invite.id  }}" class="close-confirmation">Close</span>
+</div>
+
+       <div id="ignr{{ invite.id }}" class="ignore-confirmation" style="display:none;">
+        <p>Invitation ignored and archived.  More options: <a  href="/invitations/">I Don't Know {{ invite.sender_id.first_name }}</a>
+        <span id="{{ invite.id }}" class="close-confirmation">Close</span>
+			</div>
+
+
+
+      {% endfor %}
+
+                    </ol>
+
+                  </div>
+
+
+
+
+{% endblock %}
+
+
+{% block script_include %}
+<script type="text/javascript">
+    $('#invite_tab').addClass('selected');
+    $('#msg_tab').removeClass('selected');
+    $('.accept').click(function () {
+        var save_id = $(this).attr('value');
+        var parentData = $(this).parents("li.inbox-item:first");
+        var preserve_html = parentData.html();
+        parentData.html('<center><img style="margin-top:7px;" src="/static/assets/images/anim_loading_16x16.gif" /></center>');
+        $.ajax({
+            type: "post",
+            url: "/accept-or-ignore/",
+            data: {'invite_no': $(this).attr('value'), 'query': "accept"}
+        }).done(function (msg) {
+                    if (msg['message'] == "bad data!")
+                        parentData.html(preserve_html);
+                    else {
+                        parentData.html(' ');
+                        $('#confirm' + save_id).show();
+                    }
+                });
+    });
+
+    $('.ignore').click(function () {
+        var save_id = $(this).attr('value');
+        var parentData = $(this).parents("li.inbox-item:first");
+        var preserve_html = parentData.html();
+        parentData.html('<center><img style="margin-top:7px;" src="/static/assets/images/anim_loading_16x16.gif" /></center>');
+        $.ajax({
+            type: "post",
+            url: "/accept-or-ignore/",
+            data: {'invite_no': $(this).attr('value'), 'query': "ignore"}
+        }).done(function (msg) {
+                    if (msg['message'] == "bad data!")
+                        parentData.html(preserve_html);
+                    else {
+                        parentData.html(' ');
+                        $('#ignr' + save_id).show();
+
+                    }
+                });
+    });
+</script>
+{% endblock %}

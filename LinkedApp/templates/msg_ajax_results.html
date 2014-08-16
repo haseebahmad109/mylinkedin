@@ -1,0 +1,19 @@
+{% for entity in connections %}
+
+{#    {% if entity in connections  %}#}
+        <li id="{{ entity.with_whom.first_name }}{{ entity.with_whom.last_name }}"class="top first yui-ac-highlight" value="{{ entity.with_whom.id }}" style="">
+            <img src="/media/{{ entity.with_whom.profile_pic }}" width="40" height="40s">
+            <h4 class="item-headline has-subline"><strong>{{ entity.with_whom.first_name }}{{ entity.with_whom.last_name }}</strong></h4>
+            {% if entity.with_whom.user_type == "Student" %}
+                    <p class="item-subline">Student at {% for e in entity.with_whom.student_set.all %}{{ e.School_University }},      {%endfor%}</p>
+
+                {% elif entity.with_whom.user_type == "Employed" %}
+                    <p class="item-subline">Works as {% for e in entity.with_whom.employed_set.all %}{{ e.Job_title  }} at {{ e.Company }},{% endfor %}</p>
+                {% elif entity.with_whom.user_type == "Job Seeker" %}
+                    <p class="item-subline">Worked at {% for e in entity.with_whom.jobseeker_set.all %}{{ e.MostRecentCompany }},{% endfor %}</p>
+                {% endif %}
+
+
+    </li>
+{#    {%endif  %}#}
+{% endfor %}

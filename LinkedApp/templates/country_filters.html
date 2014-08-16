@@ -1,0 +1,25 @@
+
+{% for element in q %}
+
+    <div class="graph-bar">
+        <a id="{{element.country  }}" class="facet-item" >
+            <div class="overall">
+
+
+
+            <div id="{{ element.country }}blue"class="blue_pb" style="width:{{ element.count|add:"1" }}%; ">
+
+                <div style="position: absolute;  width:275px;">
+                    <span class="count">{{ element.count }}</span>
+                    <label >{{ element.country }}</label>
+                </div>
+            </div>
+            </div>
+
+
+        </a>
+    </div>
+
+
+
+{% endfor %}

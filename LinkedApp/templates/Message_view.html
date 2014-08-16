@@ -1,0 +1,213 @@
+{% extends "Messages.html" %}
+{% load static %}
+
+{% block layout_change %}
+
+
+
+
+            <div id="messages" class="inbox-null">
+        <form action="/inbox/bulk_action" method="POST" name="bulkActionForm" novalidate="novalidate">
+                      <div class="new-bulk">
+
+    <ul class="bulk">
+
+
+        <li><input class="btn-quaternary" type="submit" name="bulkArchive" value="Archive" disabled=""></li>
+
+      <li class="bulk-group"><input class="btn-quaternary" type="submit" name="bulkTrash" value="Delete" disabled=""></li>
+
+        <li><input class="btn-quaternary" type="submit" name="bulkMarkRead" value="Mark Read" disabled=""></li>
+        <li><input class="btn-quaternary" type="submit" name="bulkMarkUnread" value="Mark Unread" disabled=""></li>
+
+
+
+
+</ul>
+                      </div>
+                      <div class="select-filters-sort">
+                        <div class="js-filters-sort"><div class="filters styled-dropdown">
+  <span class="label"><span class="styled-dropdown-select-null">All Messages</span></span><select  name="subFilter">
+
+        <option value="none">All Messages</option>
+
+
+        <option value="unread">Unread</option>
+
+
+        <option value="userStarred">Flagged</option>
+
+
+        <option value="inmail">InMails</option>
+
+
+        <option value="recommendation">Recommendations</option>
+
+
+        <option value="introduction">Introductions</option>
+
+
+        <option value="profile">Profiles</option>
+
+
+        <option value="job">Jobs</option>
+
+
+        <option value="blocked">Blocked Messages</option>
+
+  </select>
+<ul class="drop"></ul></div><div class="sort styled-dropdown">
+  <span class="label"><span class="styled-dropdown-select-null">Newest</span></span><select name="sortBy">
+
+        <option value="DATE">Newest</option>
+
+
+        <option value="DATE_REV">Oldest</option>
+
+  </select>
+<ul class="drop"></ul></div></div>
+                        <div class="select">
+  <h4>Select:</h4>
+  <ul>
+    <li><a class="select-all disabled" href="#">All</a></li>
+    <li><a class="select-none disabled" href="#">None</a></li>
+  </ul>
+</div>
+                        </div>
+
+      {% if inbox_messages  %}
+      <ol class="inbox-list ">
+                    {% for invite in inbox_messages %}
+      <li id="data-row{{ invite.id }}" class="inbox-item invitation-item">
+        <input class="chk" type="checkbox"  >
+                <img class="photo" src="/media/{{ invite.to.profile_pic }}"  height="40" width="40">
+                <div class="item-content">
+{#                  <div class="date">Nov 21</div>#}
+                      <span class="participants">
+                          <span class="new-miniprofile-container ">
+                              <strong>
+                                      <a href="/user/{{ invite.of_whom.id }}" style="font-wight:bold; color:black; font-size:13px">
+                                        {{ invite.to.first_name }} {{ invite.to.last_name }}
+                                      </a>
+                              </strong>
+                          </span>
+                       </span>
+
+                      <p class="meta" style="padding-bottom: 5px; margin-top: 2px;">
+
+                          <span class="note">
+                            <a href="" style="font-weight:bold; font-size:13px">{{ invite.subject }}</a>
+
+                          </span>
+                      </p>
+
+
+                        <ul class="inbox-msgs" style="font-size: 130%; padding-bottom: 10px">
+                 <li class="">
+                <a  class="" href="">Reply</a>
+
+                 </li>
+                 <li class="">
+
+                 <a  class="" href="">Forward</a>
+
+                 </li>
+                 <li class="">
+
+                 <a  class="" href="">Archive</a>
+
+                 </li>
+                 <li class="">
+                 <a  class="" href="">Delete</a>
+
+                 </li>
+                 </ul>
+
+
+
+
+</div>
+  </li>
+
+
+      {% endfor %}
+
+</ol>
+
+
+
+
+
+
+            {% else %}
+
+        <div class="inbox-null-msg">
+
+                <p class="null-default" style="display: block;">There are no received messages.</p>
+
+                <p class="null-unread hidden" style="display: none;">There are no unread messages.</p>
+                <p class="null-flagged hidden" style="display: none;">There are no starred messages.</p>
+                <p class="null-inmail hidden" style="display: none;">There are no InMails.</p>
+                <p class="null-recommendations hidden" style="display: none;">There are no recommendation messages.</p>
+                <p class="null-intros hidden" style="display: none;">There are no introduction messages.</p>
+                <p class="null-profiles hidden" style="display: none;">There are no profile messages.</p>
+                <p class="null-jobs hidden" style="display: none;">There are no job messages.</p>
+                <p class="null-blocked hidden" style="display: none;">There are no blocked messages.</p>
+
+                        </div>
+
+            {% endif %}
+            <div class="new-bulk new-bulk-bottom">
+                <ul class="bulk">
+
+
+                    <li><input class="btn-quaternary" type="submit" name="bulkArchive" value="Archive" disabled=""></li>
+
+                  <li class="bulk-group"><input class="btn-quaternary" type="submit" name="bulkTrash" value="Delete" disabled=""></li>
+
+                    <li><input class="btn-quaternary" type="submit" name="bulkMarkRead" value="Mark Read" disabled=""></li>
+                    <li><input class="btn-quaternary" type="submit" name="bulkMarkUnread" value="Mark Unread" disabled=""></li>
+
+
+
+
+                 </ul>
+            </div>
+
+
+
+
+<div class="pagination" style="">
+  <span class="previous-next">
+
+      <span class="pagination-previous" style="display: none">Previous</span>
+
+
+      <span class="pagination-next" style="display: none">Next</span>
+
+  </span>
+  <span class="page-report">
+  <span class="pagination-start" style="display: none">1</span>  <span class="pagination-end" style="display: none">0</span>  <span class="pagination-total" style="display: none">0</span>
+  </span>
+  <span class="first-last">
+
+      <span class="pagination-first" style="display: none">First</span>
+
+
+      <span class="pagination-last" style="display: none">Last</span>
+
+  </span>
+</div>
+
+
+          </form>
+              </div>
+
+
+{% endblock %}
+
+{% block script_includes %}
+    <script type="text/javascript">
+        $('.nav-inbox ').addClass('active');
+    </script>
+{%  endblock%}

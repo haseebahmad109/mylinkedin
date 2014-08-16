@@ -1,0 +1,41 @@
+
+<div id="{{ results|length }}"class="counting-results"></div>
+{% for entity in results %}
+
+<div  class="alumini-entity bottom-border">
+        <div class="pic-box">
+            <img src="/media/{{ entity.profile_pic }}">
+        </div>
+        <div class="mid-part">
+            <h2><a id="user-link" href="/user/{{ entity.id }}">{{  entity.first_name}} {{ entity.last_name }} {% if entity.id == user.id %}<span class="gray-text">( you )</span>{% endif %}</a></h2>
+            {% if entity.user_type == "Student" %}
+                <p>Studies at <b>{% for e in entity.student_set.all %}{{ e.School_University }},{% endfor %}</b></p>
+            {% elif entity.user_type == "Employed" %}
+                <p>works at <b>{% for e in entity.employed_set.all %}{{ e.Company }},{% endfor %}</b></p>
+            {% elif entity.user_type == "Job Seeker" %}
+                <p>worked at <b>{% for e in entity.jobseeker_set.all %}{{ e.MostRecentCompany }},{% endfor %}</b></p>
+            {% endif %}
+            <p class="country">{{ entity.country }}</p>
+            <p class="country">{{ entity.email }}</p>
+        </div>
+        <div class="grey-footer">
+            {% if entity.id != user.id %}
+                    {% if entity in connected_users %}
+                        <div class="primary-blue-button right-side ">
+                            <a href="#">Send Message</a>
+                        </div>
+                    {% elif entity in invited_users %}
+                        <div class="right-side">
+                            <p class="gray-text"><b>Request Pending</b></p>
+                        </div>
+                    {% else %}
+                        <div class="primary-blue-button right-side ">
+                            <a href="/connection/{{ entity.id }}">connect</a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+        </div>
+    </div>
+{% endfor %}
+
