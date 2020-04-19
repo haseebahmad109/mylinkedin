@@ -8,7 +8,7 @@ django-mptt==0.6.0
 django-override-settings==1.2
 django-permission==0.4.5
 django-social-auth==0.7.28
-gunicorn==17.5
+gunicorn==19.5.0
 httplib2==0.8
 mock==1.0.1
 oauth2==1.5.211
