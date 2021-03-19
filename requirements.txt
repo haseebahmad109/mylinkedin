@@ -16,7 +16,7 @@ python-openid==2.2.5
 setuptools-git==1.0
 static==0.4
 wsgiref==0.1.2
-Pillow==2.3.0
+Pillow==8.1.1
 requests==2.0.1
 beautifulsoup4==4.3.2
 versiontools==1.9.1
